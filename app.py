@@ -88,6 +88,59 @@ def Question11():
 
     return render_template('Question11.html', time1 = timeList1, time2= timeList2, total = sum)  
 
+@app.route('/Question12', methods=['GET', 'POST'])
+def Question12():
+    cursor = connection.cursor()
+
+    num1 = request.form.get("RangeStart")
+    num2 = request.form.get("RangeEnd")  
+
+    n = request.form.get("N")
+    net = request.form.get("Net") 
+    off = str(random.randint(0,9))
+
+    t = int(request.form.get("T")) 
+    timeList1 = []
+    timeList2 = []
+    sum = 0
+    # 10a
+    for i in range(0,t):
+        if( not r.get("sai"+num1+num2)):
+            starttime = timeit.default_timer()
+            query_str = "select b.id, b.net, b.place, a.nst from [ds-2] a join [dsi-1] b on a.id = b.id where a.nst >="+num1+" and a.nst <= "+num2
+            cursor.execute(query_str)    
+            data = cursor.fetchall()
+            r.set("sai"+num1+num2, pickle.dumps(data))
+            time = timeit.default_timer() - starttime
+            timeList1.append(time)
+            sum = sum + time
+        else:
+            starttime = timeit.default_timer()
+            data = pickle.loads(r.get("sai"+num1+num2))
+            time = timeit.default_timer() - starttime
+            timeList1.append(time)
+            sum = sum + time
+
+    # off = str(random.randint(0,9))
+    for i in range(0,t):
+        if( not r.get("sai"+n+net)):
+            starttime = timeit.default_timer()
+            query_str = "select top "+n+" * from (select b.id, b.net, b.place, a.nst from [ds-2] a join [dsi-1] b on a.id = b.id where b.net = '"+net+"' ORDER BY b.id OFFSET "+off+" ROWS) a1"
+            cursor.execute(query_str)    
+            data = cursor.fetchall()
+            r.set("sai"+n+net,pickle.dumps(data))
+            time = timeit.default_timer() - starttime
+            timeList2.append(time)
+            sum = sum + time
+        else:
+            starttime = timeit.default_timer()
+            data = pickle.loads(r.get("sai"+n+net))
+            time = timeit.default_timer() - starttime
+            timeList2.append(time)
+            sum = sum + time
+
+    return render_template('Question11.html', time1 = timeList1, time2= timeList2, total = sum)  
+
 
 @app.route('/ShowNLargest', methods=['GET', 'POST'])
 def showDetails():
