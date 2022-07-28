@@ -1,0 +1,62 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+
+
+    <link rel="stylesheet" href="../static/style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <div class="heading" style="text-align: center;align-content: center;">
+        <div class="card"
+            style="width: 100%; height: 15rem; align-items: center; background: cadetblue; font-style: oblique; text-align: center">
+            <div class="card-body" style="text-align:center;">
+                <h5 class="card-title" style="text-align:center">Assignment 1</h5>
+                <div>
+                    <p class="card-text" style="text-align:center">Name: Sainath Indupuri UTA ID : 1001856992</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</head>
+
+<body>
+    <div class="ShowAllTable" style="width: 100rem; margin-left: 5rem;margin-right: 5rem; align-items: center;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Magnitude</th>
+                    <th scope="col">Latitude</th>
+                    <th scope="col">Longitude</th>
+                    <th scope="col">Depth</th>
+                    <th scope="col">Time</th>
+                </tr>
+            </thead>
+            {% for item in data %}
+            <tbody>
+                <tr>
+                    <td>{{item[4]}}</td>
+                    <td>{{item[1]}}</td>
+                    <td>{{item[2]}}</td>
+                    <td>{{item[3]}}</td>
+                    <td>{{item[0]}}</td>
+
+                </tr>
+
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+
+    <footer>
+
+    </footer>
+
+</body>
+
+</html>

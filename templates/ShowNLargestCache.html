@@ -1,0 +1,165 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+
+
+    <link rel="stylesheet" href="../static/style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <div class="heading" style="text-align: center;align-content: center;">
+        <div class="card"
+            style="width: 100%; height: 15rem; align-items: center; background: cadetblue; font-style: oblique; text-align: center">
+            <div class="card-body" style="text-align:center;">
+                <h5 class="card-title" style="text-align:center">Assignment 1</h5>
+                <div>
+                    <p class="card-text" style="text-align:center">Name: Sainath Indupuri UTA ID : 1001856992</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</head>
+
+<body>
+
+    <h1> First Query time taken = {{time[0]}}</h1>
+    <div class="ShowAllTable" style="width: 100rem; margin-left: 5rem;margin-right: 5rem; align-items: center;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">D</th>
+                    <th scope="col">T</th>
+                    <th scope="col">Name</th>
+
+                </tr>
+            </thead>
+            {% for item in data1 %}
+            <tbody>
+                <tr>
+                    <td>{{item[0]}}</td>
+                    <td>{{item[1]}}</td>
+                    <td>{{item[2]}}</td>
+
+                </tr>
+
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+
+    <h1> Second Query time taken = {{time[1]}}</h1>
+
+    <div class="ShowAllTable" style="width: 100rem; margin-left: 5rem;margin-right: 5rem; align-items: center;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">D</th>
+                    <th scope="col">T</th>
+                    <th scope="col">Name</th>
+
+                </tr>
+            </thead>
+            {% for item in data2 %}
+            <tbody>
+                <tr>
+                    <td>{{item[0]}}</td>
+                    <td>{{item[1]}}</td>
+                    <td>{{item[2]}}</td>
+
+                </tr>
+
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+
+    <h1> Third Query time taken = {{time[2]}}</h1>
+
+    <div class="ShowAllTable" style="width: 100rem; margin-left: 5rem;margin-right: 5rem; align-items: center;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">D</th>
+                    <th scope="col">T</th>
+                    <th scope="col">Name</th>
+
+                </tr>
+            </thead>
+            {% for item in data3 %}
+            <tbody>
+                <tr>
+                    <td>{{item[0]}}</td>
+                    <td>{{item[1]}}</td>
+                    <td>{{item[2]}}</td>
+
+                </tr>
+
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+
+    <h1> Fourth Query time taken = {{time[3]}}</h1>
+
+    <div class="ShowAllTable" style="width: 100rem; margin-left: 5rem;margin-right: 5rem; align-items: center;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">D</th>
+                    <th scope="col">T</th>
+                    <th scope="col">Name</th>
+
+                </tr>
+            </thead>
+            {% for item in data4 %}
+            <tbody>
+                <tr>
+                    <td>{{item[0]}}</td>
+                    <td>{{item[1]}}</td>
+                    <td>{{item[2]}}</td>
+
+                </tr>
+
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+
+    <h1> Fifth Query time taken = {{time[4]}}</h1>
+
+    <div class="ShowAllTable" style="width: 100rem; margin-left: 5rem;margin-right: 5rem; align-items: center;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">D</th>
+                    <th scope="col">T</th>
+                    <th scope="col">Name</th>
+
+                </tr>
+            </thead>
+            {% for item in data5 %}
+            <tbody>
+                <tr>
+                    <td>{{item[0]}}</td>
+                    <td>{{item[1]}}</td>
+                    <td>{{item[2]}}</td>
+
+                </tr>
+
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+
+    <footer>
+
+    </footer>
+
+</body>
+
+</html>
