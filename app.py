@@ -28,12 +28,12 @@ def Question10a():
     cursor = connection.cursor()    
     num1 = request.form.get("RangeStart")
     num2 = request.form.get("RangeEnd")  
-
+    starttime = timeit.default_timer()
     query_str = "select b.id, b.net, b.place, a.nst from [ds-2] a join [dsi-1] b on a.id = b.id where a.nst >="+num1+" and a.nst <= "+num2;
     cursor.execute(query_str)    
     data = cursor.fetchall()
-    
-    return render_template('Question10a.html', data = data)  
+    time = timeit.default_timer() - starttime
+    return render_template('Question10a.html', data = data, time  = time)  
 
 @app.route('/Question10b', methods=['GET', 'POST'])
 def Question10b():
@@ -41,11 +41,12 @@ def Question10b():
     n = request.form.get("N")
     net = request.form.get("Net")  
     off = str(random.randint(0,9))
+    starttime = timeit.default_timer()
     query_str = "select top "+n+" * from (select b.id, b.net, b.place, a.nst from [ds-2] a join [dsi-1] b on a.id = b.id where b.net = '"+net+"' ORDER BY b.id OFFSET "+off+" ROWS) a1"
     cursor.execute(query_str)    
     data = cursor.fetchall()
-    
-    return render_template('Question10a.html', data = data)  
+    time = timeit.default_timer() - starttime
+    return render_template('Question10a.html', data = data, time = time)  
 
 @app.route('/ShowNLargest', methods=['GET', 'POST'])
 def showDetails():
