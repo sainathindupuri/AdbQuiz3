@@ -8,9 +8,6 @@ import hashlib
 import pickle
 from flask import Flask, Request, render_template, request, flash
 import random
-import hashlib
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
 
 app = Flask(__name__, template_folder="templates")
 connection = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:adbsai.database.windows.net,1433;Database=adb;Uid=sainath;Pwd=Shiro@2018;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30')
@@ -108,68 +105,43 @@ def Question12():
     sum = 0
     # 10a
     print( r.exists("sai"+num1+num2))
-    query_str = "select b.id, b.net, b.place, a.nst from [ds-2] a join [dsi-1] b on a.id = b.id where a.nst >="+num1+" and a.nst <= "+num2
-    hashvalue = hashlib.sha224(query_str.encode('utf-8')).hexdigest()
-    redis_key = "redis_cache:" + hashvalue
     for i in range(0,t):
-        if( r.exists(redis_key) != 1):
-            print("not coming")
-            starttime = timeit.default_timer()            
+        if( r.exists("sai"+num1+num2) != 1):
+            starttime = timeit.default_timer()
+            query_str = "select b.id, b.net, b.place, a.nst from [ds-2] a join [dsi-1] b on a.id = b.id where a.nst >="+num1+" and a.nst <= "+num2
             cursor.execute(query_str)    
             data = cursor.fetchall()
-            r.set(redis_key, pickle.dumps(data))
+            r.set("sai"+num1+num2, pickle.dumps(data))
             time = timeit.default_timer() - starttime
             timeList1.append(time)
             sum = sum + time
         else:
             starttime = timeit.default_timer()
-            data = pickle.loads(r.get(redis_key))
+            data = pickle.loads(r.get("sai"+num1+num2))
             time = timeit.default_timer() - starttime
             timeList1.append(time)
             sum = sum + time
 
     # off = str(random.randint(0,9))
-    query_str = "select top "+n+" * from (select b.id, b.net, b.place, a.nst from [ds-2] a join [dsi-1] b on a.id = b.id where b.net = '"+net+"' ORDER BY b.id OFFSET "+off+" ROWS) a1"
-    hashvalue = hashlib.sha224(query_str.encode('utf-8')).hexdigest()
-    redis_key = "redis_cache:" + hashvalue
     for i in range(0,t):
-        if( r.exists(redis_key) != 1):
+        if( r.exists("sai"+n+net) != 1):
             print("not coming")
             starttime = timeit.default_timer()
-            
+            query_str = "select top "+n+" * from (select b.id, b.net, b.place, a.nst from [ds-2] a join [dsi-1] b on a.id = b.id where b.net = '"+net+"' ORDER BY b.id OFFSET "+off+" ROWS) a1"
             cursor.execute(query_str)    
             data = cursor.fetchall()
-            r.set(redis_key,pickle.dumps(data))
+            r.set("sai"+n+net,pickle.dumps(data))
             time = timeit.default_timer() - starttime
             timeList2.append(time)
             sum = sum + time
         else:
             starttime = timeit.default_timer()
-            data = pickle.loads(r.get(redis_key))
+            data = pickle.loads(r.get("sai"+n+net))
             time = timeit.default_timer() - starttime
             timeList2.append(time)
             sum = sum + time
 
     return render_template('Question11.html', time1 = timeList1, time2= timeList2, total = sum)  
-
-# @app.route('/Question13', methods=['GET', 'POST'])
-# def plot_png():
-
-#     cursor = connection.cursor()    
-#     num1 = request.form.get("RangeStart")
-#     num2 = request.form.get("RangeEnd")  
-#     starttime = timeit.default_timer()
-#     query_str = "select b.id, b.net, b.place, a.nst from [ds-2] a join [dsi-1] b on a.id = b.id where a.nst >="+num1+" and a.nst <= "+num2
-#     cursor.execute(query_str)    
-#     data = cursor.fetchall()
-#     time = timeit.default_timer() - starttime
-#     return render_template('Question10a.html', data = data, time  = time)  
-
-
-#     fig = create_figure()
-#     output = io.BytesIO()
-#     FigureCanvas(fig).print_png(output)
-#     return Response(output.getvalue(), mimetype='image/png')
 
 
 
