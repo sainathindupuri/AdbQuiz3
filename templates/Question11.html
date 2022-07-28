@@ -27,8 +27,54 @@
 
 <body>
 
-    <h1> {{rows_count}} rows updated for {{net}}</h1>
-   
+    
+
+    <div class="ShowAllTable" style="width: 100rem; margin-left: 5rem;margin-right: 5rem; align-items: center;">
+        <h1> Total Time taken = {{total}}</h1>
+        
+        <h1> individual times for query1</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Time(s)</th>                    
+
+                </tr>
+            </thead>
+            {% for item in time1 %}
+            <tbody>
+                <tr>
+                    <td>{{item}}</td>
+                    
+                </tr>
+
+            </tbody>
+            {% endfor %}
+        </table>
+
+
+        <h1> individual times for query2</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Time(s)</th>                    
+
+                </tr>
+            </thead>
+            {% for item in time2 %}
+            <tbody>
+                <tr>
+                    <td>{{item}}</td>
+                    
+                </tr>
+
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+
+    <footer>
+
+    </footer>
 
 </body>
 

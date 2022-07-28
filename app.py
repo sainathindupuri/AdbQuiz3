@@ -29,11 +29,13 @@ def Question10a():
     num1 = request.form.get("RangeStart")
     num2 = request.form.get("RangeEnd")  
     starttime = timeit.default_timer()
-    query_str = "select b.id, b.net, b.place, a.nst from [ds-2] a join [dsi-1] b on a.id = b.id where a.nst >="+num1+" and a.nst <= "+num2;
+    query_str = "select b.id, b.net, b.place, a.nst from [ds-2] a join [dsi-1] b on a.id = b.id where a.nst >="+num1+" and a.nst <= "+num2
     cursor.execute(query_str)    
     data = cursor.fetchall()
     time = timeit.default_timer() - starttime
     return render_template('Question10a.html', data = data, time  = time)  
+
+
 
 @app.route('/Question10b', methods=['GET', 'POST'])
 def Question10b():
@@ -47,6 +49,45 @@ def Question10b():
     data = cursor.fetchall()
     time = timeit.default_timer() - starttime
     return render_template('Question10a.html', data = data, time = time)  
+
+
+@app.route('/Question11', methods=['GET', 'POST'])
+def Question11():
+    cursor = connection.cursor()
+
+    num1 = request.form.get("RangeStart")
+    num2 = request.form.get("RangeEnd")  
+
+    n = request.form.get("N")
+    net = request.form.get("Net") 
+    off = str(random.randint(0,9))
+
+    t = int(request.form.get("T")) 
+    timeList1 = []
+    timeList2 = []
+    sum = 0
+    # 10a
+    for i in range(0,t):
+        starttime = timeit.default_timer()
+        query_str = "select b.id, b.net, b.place, a.nst from [ds-2] a join [dsi-1] b on a.id = b.id where a.nst >="+num1+" and a.nst <= "+num2
+        cursor.execute(query_str)    
+        data = cursor.fetchall()
+        time = timeit.default_timer() - starttime
+        timeList1.append(time)
+        sum = sum + time
+
+    # off = str(random.randint(0,9))
+    for i in range(0,t):
+        starttime = timeit.default_timer()
+        query_str = "select top "+n+" * from (select b.id, b.net, b.place, a.nst from [ds-2] a join [dsi-1] b on a.id = b.id where b.net = '"+net+"' ORDER BY b.id OFFSET "+off+" ROWS) a1"
+        cursor.execute(query_str)    
+        data = cursor.fetchall()
+        time = timeit.default_timer() - starttime
+        timeList2.append(time)
+        sum = sum + time
+
+    return render_template('Question11.html', time1 = timeList1, time2= timeList2, total = sum)  
+
 
 @app.route('/ShowNLargest', methods=['GET', 'POST'])
 def showDetails():
@@ -188,20 +229,20 @@ def ZTime():
  
 
 
-@app.route('/Question11', methods=['GET', 'POST'])
-def Question11():
-    cursor = connection.cursor()    
-    net = request.form.get("net")
-    min_mag = request.form.get("magMin")   
-    max_mag = request.form.get("magMax")
-    newMag = request.form.get("newMag")
+# @app.route('/Question11', methods=['GET', 'POST'])
+# def Question11():
+#     cursor = connection.cursor()    
+#     net = request.form.get("net")
+#     min_mag = request.form.get("magMin")   
+#     max_mag = request.form.get("magMax")
+#     newMag = request.form.get("newMag")
 
-    query_str = "UPDATE  dbo.ds SET mag ="+newMag+" where id in (SELECT a.id from dbo.ds a join dbo.dsi b on a.id = b.id where b.net = '"+net+"' ) and mag <=" +max_mag+" and mag>="+min_mag 
-    cursor.execute(query_str)
-    rows_effected = cursor.rowcount
-    cursor.commit()
-    print("rows ",rows_effected)
-    return render_template('Question11.html', rows_count = rows_effected, net = net)  
+#     query_str = "UPDATE  dbo.ds SET mag ="+newMag+" where id in (SELECT a.id from dbo.ds a join dbo.dsi b on a.id = b.id where b.net = '"+net+"' ) and mag <=" +max_mag+" and mag>="+min_mag 
+#     cursor.execute(query_str)
+#     rows_effected = cursor.rowcount
+#     cursor.commit()
+#     print("rows ",rows_effected)
+#     return render_template('Question11.html', rows_count = rows_effected, net = net)  
 
 
 @app.route('/searachquakebylat', methods=['GET', 'POST'])
