@@ -7,6 +7,7 @@ import timeit
 import hashlib
 import pickle
 from flask import Flask, Request, render_template, request, flash
+import random
 
 app = Flask(__name__, template_folder="templates")
 connection = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:adbsai.database.windows.net,1433;Database=adb;Uid=sainath;Pwd=Shiro@2018;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30')
@@ -20,6 +21,31 @@ r = redis.StrictRedis(host='adb-quiz3.redis.cache.windows.net', port=6380, db=0,
 @app.route('/', methods=['POST', 'GET'])
 def Hello():
     return render_template('index.html')
+
+
+@app.route('/Question10a', methods=['GET', 'POST'])
+def Question10a():
+    cursor = connection.cursor()    
+    num1 = request.form.get("RangeStart")
+    num2 = request.form.get("RangeEnd")  
+
+    query_str = "select b.id, b.net, b.place, a.nst from [ds-2] a join [dsi-1] b on a.id = b.id where a.nst >="+num1+" and a.nst <= "+num2;
+    cursor.execute(query_str)    
+    data = cursor.fetchall()
+    
+    return render_template('Question10a.html', data = data)  
+
+@app.route('/Question10b', methods=['GET', 'POST'])
+def Question10b():
+    cursor = connection.cursor()    
+    n = request.form.get("N")
+    net = request.form.get("Net")  
+    off = str(random.randint(0,9))
+    query_str = "select top "+n+" * from (select b.id, b.net, b.place, a.nst from [ds-2] a join [dsi-1] b on a.id = b.id where b.net = '"+net+"' ORDER BY b.id OFFSET "+off+" ROWS) a1"
+    cursor.execute(query_str)    
+    data = cursor.fetchall()
+    
+    return render_template('Question10a.html', data = data)  
 
 @app.route('/ShowNLargest', methods=['GET', 'POST'])
 def showDetails():
